@@ -1,0 +1,30 @@
+[
+  {
+    "id": "astre",
+    "nom": "Ville d'Astre",
+    "type": "ville",
+    "x": 17,
+    "y": 21,
+    "description": "Capitale du royaume de Géode",
+    "lien": "https://www.notion.so/"
+  },
+  {
+    "id": "khor",
+    "nom": "Fort de Khor",
+    "type": "forteresse",
+    "x": 62,
+    "y": 38,
+    "description": "Ancienne place forte naine",
+    "lien": "https://www.notion.so/"
+  },
+  {
+  "id": "test",
+  "nom": "Personnage Test",
+  "type": "personnage",
+  "x": 50,
+  "y": 50,
+  "description": "Avatar de test",
+  "avatar": "images/avatars/test_avatar.jpg",
+  "lien": "https://www.notion.so/"
+}
+]

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Carte du monde de Géode</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="styles/leaflet.css">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+      background: #111;
+    }
+
+    .avatar-marker {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #d4af37;
+    box-shadow: 0 0 6px rgba(0,0,0,0.6);
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="scripts/leaflet.js"></script>
+  <script src="scripts/map.js"></script>
+</body>
+</html>
