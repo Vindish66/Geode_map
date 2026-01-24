@@ -96,10 +96,19 @@ function createMarker(lieu) {
   });
 }
 
-fetch('data/lieux.json')
+fetch("../data/lieux.json")
   .then(res => res.json())
   .then(lieux => {
+
     lieux.forEach(lieu => {
-      createMarker(lieu);
+
+      const marker = L.marker([lieu.latitude, lieu.longitude]).addTo(map);
+
+      const popup = `
+        <strong>${lieu.nom}</strong><br>
+        ${lieu.avatar ? `<img src="${lieu.avatar}" width="120">` : ""}
+      `;
+
+      marker.bindPopup(popup);
     });
   });
