@@ -11,10 +11,6 @@ jobs:
     environment: .env
     
     steps:
-      - name: Debug secrets presence
-        run: |
-        echo "TOKEN present: ${{ secrets.NOTION_TOKEN != '' }}"
-        echo "DB present: ${{ secrets.NOTION_DATABASE_ID != '' }}"
 
       - name: Checkout repo
         uses: actions/checkout@v4
