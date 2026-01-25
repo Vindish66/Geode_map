@@ -96,7 +96,7 @@ function createMarker(lieu) {
   });
 }
 
-fetch("../data/lieux.json")
+fetch("data/lieux.json")
   .then(res => res.json())
   .then(lieux => {
 
