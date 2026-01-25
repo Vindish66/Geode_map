@@ -1,4 +1,5 @@
 import { Client } from "@notionhq/client";
+import fs from "fs";
 import "dotenv/config";
 
 const notion = new Client({
