@@ -14,19 +14,31 @@ async function fetchLieux() {
 
   console.log("Nombre d'entrées :", response.results.length);
 
+  const lieux = [];
+
   for (const page of response.results) {
     const props = page.properties;
 
-    const nom = props.Nom?.title[0]?.plain_text;
-    const lat = props.Lat?.number;
-    const lng = props.Lng?.number;
+    const nom = props.Nom?.title[0]?.plain_text ?? null;
+    const lat = props.Lat?.number ?? null;
+    const lng = props.Lng?.number ?? null;
     const avatar =
-    page.properties.avatar?.files?.[0]?.file?.url ||
-    page.properties.avatar?.files?.[0]?.external?.url ||
-    null;
+      props.avatar?.files?.[0]?.file?.url ||
+      props.avatar?.files?.[0]?.external?.url ||
+      null;
 
-    console.log({ nom, lat, lng, avatar });
+    lieux.push({ nom, lat, lng, avatar });
   }
+
+  console.log("Nombre de lieux construits :", lieux.length);
+  console.log("Écriture de data/lieux.json");
+
+  fs.writeFileSync(
+    "data/lieux.json",
+    JSON.stringify(lieux, null, 2),
+    "utf-8"
+  );
 }
 
 fetchLieux();
+
