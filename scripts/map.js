@@ -99,6 +99,7 @@ function createMarker(lieu) {
 fetch("data/lieux.json")
   .then(res => res.json())
   .then(lieux => {
+  console.log("Lieux chargés :", lieux);
 
     lieux.forEach(lieu => {
 
