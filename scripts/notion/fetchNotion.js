@@ -29,7 +29,7 @@ async function fetchLieux() {
   }
 }
 
-console.log("Nombre de lieux récupérés :", results.length);
+console.log("Nombre de lieux récupérés :", response.length);
 console.log("Écriture de data/lieux.json");
 
 
