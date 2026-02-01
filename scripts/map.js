@@ -99,17 +99,22 @@ function createMarker(lieu) {
 fetch("data/lieux.json")
   .then(res => res.json())
   .then(lieux => {
-  console.log("Lieux chargés :", lieux);
+    console.log("Lieux chargés :", lieux);
 
     lieux.forEach(lieu => {
+      if (lieu.lat == null || lieu.lng == null) return;
 
-      const marker = L.marker([lieu.latitude, lieu.longitude]).addTo(map);
+      const marker = L.marker(
+        [lieu.lat, lieu.lng],
+        {
+          icon: lieu.avatar ? createAvatarIcon(lieu.avatar) : pinIcon
+        }
+      ).addTo(map);
 
-      const popup = `
+      marker.bindPopup(`
         <strong>${lieu.nom}</strong><br>
         ${lieu.avatar ? `<img src="${lieu.avatar}" width="120">` : ""}
-      `;
-
-      marker.bindPopup(popup);
+      `);
     });
   });
+
