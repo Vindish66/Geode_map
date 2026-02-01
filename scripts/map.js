@@ -86,6 +86,21 @@ map.on("click", (e) => {
   console.log("Coordonnées Notion :", { lat: y, lng: x });
 });
 
+marker.on("dragend", (e) => {
+  const pos = e.target.getLatLng();
+  const newLng = inverseX(pos.lng);
+  const newLat = inverseY(pos.lat);
+
+  marker.setPopupContent(`
+    <strong>${lieu.nom}</strong><br>
+    <em>Nouvelle position</em><br>
+    Lat: ${newLat} | Lng: ${newLng}
+  `).openPopup();
+
+  console.log(`📍 ${lieu.nom}`, { lat: newLat, lng: newLng });
+});
+
+
 /* =========================
    CHARGEMENT DES LIEUX
 ========================= */
