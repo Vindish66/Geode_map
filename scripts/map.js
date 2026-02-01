@@ -104,17 +104,18 @@ fetch("data/lieux.json")
     lieux.forEach(lieu => {
       if (lieu.lat == null || lieu.lng == null) return;
 
+      const pxX = convertX(lieu.lng);
+      const pxY = convertY(lieu.lat);
+
       const marker = L.marker(
-        [lieu.lat, lieu.lng],
-        {
-          icon: lieu.avatar ? createAvatarIcon(lieu.avatar) : pinIcon
-        }
+        [pxY, pxX],
+        { icon: lieu.avatar ? createAvatarIcon(lieu.avatar) : pinIcon }
       ).addTo(map);
 
       marker.bindPopup(`
         <strong>${lieu.nom}</strong><br>
         ${lieu.avatar ? `<img src="${lieu.avatar}" width="120">` : ""}
+        <br>Lat: ${lieu.lat} | Lng: ${lieu.lng}
       `);
     });
   });
-
