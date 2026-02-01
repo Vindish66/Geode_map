@@ -1,121 +1,137 @@
+/* =========================
+   ICÔNES
+========================= */
+
 const pinIcon = L.icon({
-  iconUrl: 'images/pin.png',
+  iconUrl: "images/pin.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
-  popupAnchor: [0, -32]
+  popupAnchor: [0, -32],
 });
-
-// Dimensions réelles de ton image (IMPORTANT)
-const imageWidth = 12288;
-const imageHeight = 5667;
-
-const MAP_WIDTH = 12288;
-const MAP_HEIGHT = 5776;
-
-function convertX(x) {
-  return (x / 100) * MAP_WIDTH;
-}
-
-function convertY(y) {
-  return (y / 100) * MAP_HEIGHT;
-}
-
-function inverseX(x) {
-  return Math.round((x / MAP_WIDTH) * 100);
-}
-
-function inverseY(y) {
-  return Math.round((y / MAP_HEIGHT) * 100);
-}
-
-// Création de la carte avec un système de coordonnées simple
-const map = L.map('map', {
-  crs: L.CRS.Simple,
-  minZoom: -2,
-  maxZoom: 2,
-  zoomSnap: 0.25
-});
-
-// Définition des limites de la carte
-const bounds = [
-  [0, 0],
-  [imageHeight, imageWidth]
-];
-
-// Ajout de l'image comme fond de carte
-L.imageOverlay('assets/map.jpeg', bounds).addTo(map);
-
-// Ajuster la vue à l'image
-map.fitBounds(bounds);
 
 function createAvatarIcon(url) {
   return L.divIcon({
-    className: '',
-    html: `<div class="avatar-marker" style="background-image: url('${url}')"></div>`,
+    className: "",
+    html: `<div class="avatar-marker" style="
+      width:48px;
+      height:48px;
+      background-image:url('${url}');
+      background-size:cover;
+      border-radius:50%;
+      border:2px solid #fff;
+      box-shadow:0 0 6px rgba(0,0,0,0.6);
+    "></div>`,
     iconSize: [48, 48],
     iconAnchor: [24, 48],
-    popupAnchor: [0, -48]
+    popupAnchor: [0, -48],
   });
 }
 
-function createMarker(lieu) {
+/* =========================
+   DIMENSIONS DE LA CARTE
+========================= */
 
-  const icon = lieu.avatar
-  ? createAvatarIcon(lieu.avatar)
-  : L.icon({
-      iconUrl: `images/${lieu.type}.png`,
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-      popupAnchor: [0, -40]
-    });
+// Dimensions réelles de l'image
+const IMAGE_WIDTH = 12288;
+const IMAGE_HEIGHT = 5667;
 
-  const marker = L.marker(
-    [convertY(lieu.y), convertX(lieu.x)],
-   {
-     icon,
-     draggable: true
-    }
-  ).addTo(map);
-
-  marker.bindPopup(`
-  <strong>${lieu.nom}</strong><br>
-  ${lieu.description}<br>
-  <em>X: ${lieu.x} | Y: ${lieu.y}</em><br>
-  <a href="${lieu.lien}" target="_blank">Voir la fiche</a>
-  `);
-
-
-  marker.on('dragend', function (e) {
-    const pos = e.target.getLatLng();
-
-    const newX = inverseX(pos.lng);
-    const newY = inverseY(pos.lat);
-
-    console.log(`📍 ${lieu.nom}`);
-    console.log(`X: ${newX} | Y: ${newY}`);
-  });
+// Conversion coordonnées fictives (0–100) → pixels
+function convertX(x) {
+  return (x / 100) * IMAGE_WIDTH;
 }
+
+function convertY(y) {
+  return (y / 100) * IMAGE_HEIGHT;
+}
+
+// Conversion inverse (pixels → 0–100)
+function inverseX(px) {
+  return Math.round((px / IMAGE_WIDTH) * 100);
+}
+
+function inverseY(py) {
+  return Math.round((py / IMAGE_HEIGHT) * 100);
+}
+
+/* =========================
+   INITIALISATION LEAFLET
+========================= */
+
+const map = L.map("map", {
+  crs: L.CRS.Simple,
+  minZoom: -2,
+  maxZoom: 2,
+  zoomSnap: 0.25,
+});
+
+const bounds = [
+  [0, 0],
+  [IMAGE_HEIGHT, IMAGE_WIDTH],
+];
+
+L.imageOverlay("assets/map.jpeg", bounds).addTo(map);
+map.fitBounds(bounds);
+
+/* =========================
+   DEBUG : CLIQUER POUR AVOIR
+   LES COORDONNÉES NOTION
+========================= */
+
+map.on("click", (e) => {
+  const x = inverseX(e.latlng.lng);
+  const y = inverseY(e.latlng.lat);
+
+  console.log("🗺️ Click carte");
+  console.log("Pixels :", e.latlng);
+  console.log("Coordonnées Notion :", { lat: y, lng: x });
+});
+
+/* =========================
+   CHARGEMENT DES LIEUX
+========================= */
 
 fetch("data/lieux.json")
-  .then(res => res.json())
-  .then(lieux => {
-    console.log("Lieux chargés :", lieux);
+  .then((res) => {
+    if (!res.ok) throw new Error("Impossible de charger lieux.json");
+    return res.json();
+  })
+  .then((lieux) => {
+    console.log("📍 Lieux chargés :", lieux);
 
-    lieux.forEach(lieu => {
+    lieux.forEach((lieu) => {
       if (lieu.lat == null || lieu.lng == null) return;
 
+      // Conversion Notion → pixels
       const pxX = convertX(lieu.lng);
       const pxY = convertY(lieu.lat);
 
       const marker = L.marker(
         [pxY, pxX],
-        { icon: lieu.avatar ? createAvatarIcon(lieu.avatar) : pinIcon }
+        {
+          icon: lieu.avatar
+            ? createAvatarIcon(lieu.avatar)
+            : pinIcon,
+          draggable: true,
+        }
       ).addTo(map);
 
       marker.bindPopup(`
-        <strong>${lieu.nom}</strong><br>
-        ${lieu.avatar ? `<img src="${lieu.avatar}" width="120">` : ""}
-        <br>Lat: ${lieu.lat} | Lng: ${lieu.lng}
+        <strong>${lieu.nom ?? "Lieu sans nom"}</strong><br>
+        ${lieu.avatar ? `<img src="${lieu.avatar}" width="120"><br>` : ""}
+        <em>Lat: ${lieu.lat} | Lng: ${lieu.lng}</em>
       `);
+
+      // Debug déplacement
+      marker.on("dragend", (e) => {
+        const pos = e.target.getLatLng();
+        const newLng = inverseX(pos.lng);
+        const newLat = inverseY(pos.lat);
+
+        console.log(`📍 ${lieu.nom}`);
+        console.log(`Nouvelles coordonnées Notion : lat=${newLat}, lng=${newLng}`);
+      });
     });
+  })
+  .catch((err) => {
+    console.error("❌ Erreur chargement lieux :", err);
   });
