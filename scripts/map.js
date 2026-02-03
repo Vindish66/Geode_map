@@ -65,35 +65,19 @@ map.on("click", e => {
 });
 
 // ================= FETCH LIEUX =================
-fetch("data/lieux.json")
-  .then(res => res.json())
-  .then(lieux => {
-    console.log("Lieux chargés :", lieux);
+lieux.forEach(lieu => {
+  console.log("AVATAR =", lieu.avatar);
 
-    lieux.forEach(lieu => {
-      if (lieu.lat == null || lieu.lng == null) return;
+  const marker = L.marker(
+    [convertY(lieu.lat), convertX(lieu.lng)],
+    {
+      icon: createAvatarIcon(
+        "https://upload.wikimedia.org/wikipedia/en/6/6f/KennyMcCormick.png"
+      ),
+      draggable: true
+    }
+  ).addTo(map);
 
-      const marker = L.marker(
-        [convertY(lieu.lat), convertX(lieu.lng)],
-        {
-          icon: lieu.avatar
-            ? createAvatarIcon(lieu.avatar)
-            : pinIcon,
-          draggable: true
-        }
-      ).addTo(map);
+  marker.bindPopup(`<strong>${lieu.nom}</strong>`);
+});
 
-      marker.bindPopup(`
-        <strong>${lieu.nom}</strong><br>
-        ${lieu.avatar ? `<img src="${lieu.avatar}" width="120">` : ""}
-        <br><em>X:${lieu.lng} | Y:${lieu.lat}</em>
-      `);
-
-      marker.on("dragend", e => {
-        const pos = e.target.getLatLng();
-        console.log(
-          `📦 ${lieu.nom} → X:${inverseX(pos.lng)} Y:${inverseY(pos.lat)}`
-        );
-      });
-    });
-  });
