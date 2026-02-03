@@ -7,24 +7,21 @@ const pinIcon = L.icon({
 
 function createAvatarIcon(url) {
   return L.divIcon({
-    className: "",
-    html: `
-      <div style="
-        width:48px;
-        height:48px;
-        border-radius:50%;
-        background-image:url('${url}');
-        background-size:cover;
-        background-position:center;
-        border:2px solid white;
-        box-shadow:0 0 6px rgba(0,0,0,0.6);
-      "></div>
-    `,
+    className: "avatar-icon",
+    html: `<img src="${url}" style="
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      display:block;
+      border:2px solid white;
+      box-shadow:0 0 6px rgba(0,0,0,.6);
+    ">`,
     iconSize: [48, 48],
     iconAnchor: [24, 48],
     popupAnchor: [0, -48]
   });
 }
+
 
 // ================= CARTE =================
 const MAP_WIDTH = 12288;
