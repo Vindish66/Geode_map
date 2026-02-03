@@ -7,6 +7,7 @@ const pinIcon = L.icon({
 
 function createAvatarIcon(url) {
   return L.divIcon({
+    className: "",
     html: `
       <div style="
         width:48px;
@@ -16,11 +17,12 @@ function createAvatarIcon(url) {
         background-size:cover;
         background-position:center;
         border:2px solid white;
+        box-shadow:0 0 6px rgba(0,0,0,0.6);
       "></div>
     `,
     iconSize: [48, 48],
     iconAnchor: [24, 48],
-    className: ""
+    popupAnchor: [0, -48]
   });
 }
 
