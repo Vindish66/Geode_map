@@ -114,28 +114,25 @@ fetch("data/lieux.json")
   .then((lieux) => {
     console.log("📍 Lieux chargés :", lieux);
 
-    lieux.forEach((lieu) => {
-      if (lieu.lat == null || lieu.lng == null) return;
+lieux.forEach(lieu => {
+  if (lieu.lat == null || lieu.lng == null) return;
 
-      // Conversion Notion → pixels
-      const pxX = convertX(lieu.lng);
-      const pxY = convertY(lieu.lat);
+  const icon = lieu.avatar
+    ? createAvatarIcon(lieu.avatar)
+    : defaultIcon;
 
-      const marker = L.marker(
-        [pxY, pxX],
-        {
-          icon: lieu.avatar
-            ? createAvatarIcon(lieu.avatar)
-            : pinIcon,
-          draggable: true,
-        }
-      ).addTo(map);
+  const marker = L.marker([lieu.lat, lieu.lng], {
+    icon,
+    draggable: true
+  }).addTo(map);
 
-      marker.bindPopup(`
-        <strong>${lieu.nom ?? "Lieu sans nom"}</strong><br>
-        ${lieu.avatar ? `<img src="${lieu.avatar}" width="120"><br>` : ""}
-        <em>Lat: ${lieu.lat} | Lng: ${lieu.lng}</em>
-      `);
+  marker.bindPopup(`<strong>${lieu.nom}</strong>`);
+
+  marker.on("dragend", e => {
+    const { lat, lng } = e.target.getLatLng();
+    console.log(`${lieu.nom} déplacé →`, lat, lng);
+  });
+});
 
       // Debug déplacement
       marker.on("dragend", (e) => {
