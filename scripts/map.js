@@ -11,21 +11,14 @@ const pinIcon = L.icon({
 
 function createAvatarIcon(url) {
   return L.divIcon({
-    className: "",
-    html: `<div class="avatar-marker" style="
-      width:48px;
-      height:48px;
-      background-image:url('${url}');
-      background-size:cover;
-      border-radius:50%;
-      border:2px solid #fff;
-      box-shadow:0 0 6px rgba(0,0,0,0.6);
-    "></div>`,
+    className: 'avatar-icon',
+    html: `<div class="avatar-marker" style="background-image:url('${url}')"></div>`,
     iconSize: [48, 48],
     iconAnchor: [24, 48],
-    popupAnchor: [0, -48],
+    popupAnchor: [0, -48]
   });
 }
+
 
 /* =========================
    DIMENSIONS DE LA CARTE
