@@ -19,7 +19,7 @@ async function fetchLieux() {
 
   for (const page of response.results) {
     const props = page.properties;
-
+    console.log(props.avatar);
     const nom = props.Nom?.title[0]?.plain_text ?? null;
     const lat = props.Lat?.number ?? null;
     const lng = props.Lng?.number ?? null;
