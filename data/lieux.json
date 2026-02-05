@@ -3,19 +3,19 @@
     "nom": "Kenny",
     "lat": 40,
     "lng": 40,
-    "avatar": null
+    "avatar": "https://upload.wikimedia.org/wikipedia/en/6/6f/KennyMcCormick.png"
   },
   {
     "nom": "Cartman",
     "lat": 30,
     "lng": 30,
-    "avatar": null
+    "avatar": "https://static.wikia.nocookie.net/southpark/images/c/c4/Eric-cartman.png/revision/latest?cb=20210114230120&path-prefix=fr"
   },
   {
     "nom": "Stan",
     "lat": 20,
     "lng": 20,
-    "avatar": null
+    "avatar": "https://static.wikia.nocookie.net/southpark/images/c/c6/Stan-marsh-0.png"
   },
   {
     "nom": "Kiki",
