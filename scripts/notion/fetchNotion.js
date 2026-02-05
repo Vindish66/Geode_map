@@ -24,8 +24,8 @@ async function fetchLieux() {
     const lat = props.Lat?.number ?? null;
     const lng = props.Lng?.number ?? null;
     const avatar =
-      props.avatar?.files?.[0]?.file?.url ||
-      props.avatar?.files?.[0]?.external?.url ||
+      props.Avatar?.files?.[0]?.file?.url ||
+      props.Avatar?.files?.[0]?.external?.url ||
       null;
 
     lieux.push({ nom, lat, lng, avatar });
